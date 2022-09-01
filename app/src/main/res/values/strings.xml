@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Image Gallery App</string>
+    <string name="kittens">Kittens</string>
+    <string name="dogs">Dogs</string>
+    <string name="trending">Trending today</string>
+    <string name="favorites">Your favorites</string>
+</resources>
