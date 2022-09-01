@@ -49,7 +49,7 @@ fun HomeScreen(
             .fillMaxSize(),
     ) {
 
-        if (isConnected)
+       if (isConnected)
 
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -83,6 +83,7 @@ fun HomeScreen(
                         }
                     }
                 } else {
+                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -117,6 +118,7 @@ fun HomeScreen(
                         }
                     }
                 } else {
+                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -151,6 +153,7 @@ fun HomeScreen(
                         }
                     }
                 } else {
+                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()

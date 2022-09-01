@@ -1,6 +1,7 @@
 package ken.projects.imagegalleryapp.data.remote
 
 import ken.projects.imagegalleryapp.BuildConfig
+import ken.projects.imagegalleryapp.domain.model.MetadataResponse
 import ken.projects.imagegalleryapp.domain.model.PopularPhotosResponse
 import ken.projects.imagegalleryapp.domain.model.SearchResponse
 import retrofit2.http.GET
@@ -25,5 +26,10 @@ interface ImagesAPI {
         @Query("page") page: Int? = null,
         @Query("per_page") perPage: Int? = 100,
     ): PopularPhotosResponse
+
+    @GET("?method=flickr.photos.getExif&format=json&nojsoncallback=1&api_key=$API_KEY")
+    suspend fun getPhotoMetadata(
+        @Query("photo_id") photoId:String
+    ):MetadataResponse
 
 }

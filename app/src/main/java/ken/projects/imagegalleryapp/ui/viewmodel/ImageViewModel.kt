@@ -35,6 +35,9 @@ class ImageViewModel @Inject constructor(
     var imageDetail by mutableStateOf(ImageState())
         private set
 
+    var metadataState by mutableStateOf(ImageState())
+        private set
+
 
     val popularImagesPager = Pager(
         PagingConfig(pageSize = 100)
@@ -56,6 +59,7 @@ class ImageViewModel @Inject constructor(
 
     fun setImageDetail(image: PhotoItem) {
         imageDetail = imageDetail.copy(image = image)
+        getPhotoMetadata(image.id)
     }
 
     fun searchImages(query: String) = viewModelScope.launch {
@@ -96,6 +100,32 @@ class ImageViewModel @Inject constructor(
 
 
         }
+    }
+
+    fun getPhotoMetadata(photoId: String) = viewModelScope.launch {
+
+        metadataState = metadataState.copy(
+            loading = true,
+        )
+
+        when (val result = repo.getPhotoMetaData(photoId)) {
+            is Resource.Error -> {
+                metadataState = metadataState.copy(
+                    error = result.message.toString(),
+                )
+            }
+            is Resource.Success -> {
+
+                metadataState = metadataState.copy(
+                    metadata = result.data?.photo,
+                    loading = false
+                )
+            }
+
+
+        }
+
+
     }
 
     init {

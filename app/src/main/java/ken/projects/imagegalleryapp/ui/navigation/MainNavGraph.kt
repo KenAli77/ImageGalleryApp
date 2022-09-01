@@ -78,7 +78,7 @@ fun SetUpNavGraph(
             }
             composable(route = Screens.Details.route) {
                 DetailScreen(
-                    viewModel.imageDetail, navHostController, viewModel, isConnected = isConnected
+                    navHostController, viewModel, isConnected = isConnected
                 )
             }
 

@@ -2,6 +2,7 @@ package ken.projects.imagegalleryapp.data.repository
 
 import ken.projects.imagegalleryapp.data.local.ImageDatabase
 import ken.projects.imagegalleryapp.data.remote.ImagesAPI
+import ken.projects.imagegalleryapp.domain.model.MetadataResponse
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
 import ken.projects.imagegalleryapp.domain.model.PopularPhotosResponse
 import ken.projects.imagegalleryapp.domain.repository.Repository
@@ -12,10 +13,14 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val api: ImagesAPI,
-    private val db:ImageDatabase
+    private val db: ImageDatabase
 ) : Repository {
 
-    override suspend fun searchPhotos(query: String,page:Int?,perPage:Int?): Resource<SearchResponse> {
+    override suspend fun searchPhotos(
+        query: String,
+        page: Int?,
+        perPage: Int?
+    ): Resource<SearchResponse> {
 
         return try {
 
@@ -25,6 +30,31 @@ class RepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(e.message ?: "An unknown error has occurred")
+        }
+    }
+
+    override suspend fun getPhotoMetaData(photId: String): Resource<MetadataResponse> {
+        return try {
+
+            val data = api.getPhotoMetadata(photId)
+            Resource.Success(data)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun getPopularPhotos(
+        page: Int?,
+        perPage: Int?
+    ): Resource<PopularPhotosResponse> {
+        return try {
+            val data = api.fetchPopularImages(page = page, perPage = perPage)
+            Resource.Success(data)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message.toString())
         }
     }
 
@@ -38,15 +68,5 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun removeImageFromFavorites(image: PhotoItem) {
         return db.imageDao.removeImage(image)
-    }
-
-    override suspend fun getPopularPhotos(page:Int?, perPage:Int?): Resource<PopularPhotosResponse> {
-        return try {
-            val data = api.fetchPopularImages(page = page, perPage = perPage)
-            Resource.Success(data)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Error(e.message.toString())
-        }
     }
 }
