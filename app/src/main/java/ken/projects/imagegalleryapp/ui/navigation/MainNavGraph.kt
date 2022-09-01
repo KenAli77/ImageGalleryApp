@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -30,6 +31,8 @@ import ken.projects.imagegalleryapp.ui.screens.HomeScreen
 import ken.projects.imagegalleryapp.ui.screens.SearchScreen
 import ken.projects.imagegalleryapp.ui.theme.Cyan
 import ken.projects.imagegalleryapp.ui.theme.outfit
+import ken.projects.imagegalleryapp.util.ConnectionState
+import ken.projects.imagegalleryapp.util.connectivityState
 
 @Composable
 fun SetUpNavGraph(
@@ -40,7 +43,12 @@ fun SetUpNavGraph(
     viewModel: ImageViewModel
 ) {
 
-    var scaffoldState = rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
+
+    val connection by connectivityState()
+
+    val isConnected = connection === ConnectionState.Available
+
     Scaffold(bottomBar = { BottomNavBar(navHostController) }, scaffoldState = scaffoldState) { _ ->
 
         NavHost(
@@ -54,17 +62,24 @@ fun SetUpNavGraph(
                     filter1 = filter1,
                     filter2 = filter2,
                     viewModel = viewModel,
-                    navHostController = navHostController
+                    navHostController = navHostController,
+                    isConnected = isConnected
                 )
             }
             composable(route = Screens.Favorites.route) {
-                FavoriteScreen(viewModel, navHostController,scaffoldState)
+                FavoriteScreen(
+                    viewModel, navHostController, scaffoldState, isConnected = isConnected
+                )
             }
             composable(route = Screens.Search.route) {
-                SearchScreen(viewModel, navHostController)
+                SearchScreen(
+                    viewModel, navHostController, isConnected = isConnected
+                )
             }
             composable(route = Screens.Details.route) {
-                DetailScreen(viewModel.imageDetail, navHostController, viewModel)
+                DetailScreen(
+                    viewModel.imageDetail, navHostController, viewModel, isConnected = isConnected
+                )
             }
 
 
@@ -157,4 +172,18 @@ fun TopBar(title: String, onBackPressed: () -> Unit, backNavEnabled: Boolean = f
         contentColor = Color.White,
         elevation = 10.dp
     )
+}
+
+@Composable
+fun NoInternetView() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(text = "you are offline")
+        }
+    }
 }

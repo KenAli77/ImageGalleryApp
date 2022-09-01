@@ -24,6 +24,7 @@ import androidx.paging.compose.items
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
+import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.navigation.TopBar
@@ -36,9 +37,9 @@ fun HomeScreen(
     filter1: LazyPagingItems<PhotoItem>,
     filter2: LazyPagingItems<PhotoItem>,
     viewModel: ImageViewModel,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    isConnected: Boolean
 ) {
-
 
     val scrollState = rememberScrollState()
 
@@ -46,126 +47,129 @@ fun HomeScreen(
         topBar = { TopBar(title = "Gallery App", onBackPressed = { }) },
         modifier = Modifier
             .fillMaxSize(),
-        ) {
+    ) {
 
+        if (isConnected)
 
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(50.dp),
-            modifier = Modifier
-                .padding(top = it.calculateTopPadding())
-                .verticalScroll(scrollState)
-        ) {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(50.dp),
+                modifier = Modifier
+                    .padding(top = it.calculateTopPadding())
+                    .verticalScroll(scrollState)
+            ) {
 
-            Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(R.string.kittens),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    fontFamily = outfit,
-                    color = Purple
-                ),
-                modifier = Modifier.padding(start = 10.dp)
-            )
+                Text(
+                    text = stringResource(R.string.kittens),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        fontFamily = outfit,
+                        color = Purple
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
 
-            if (filter2.itemSnapshotList.isNotEmpty()) {
-                LazyRow() {
+                if (filter2.itemSnapshotList.isNotEmpty()) {
+                    LazyRow() {
 
-                    items(filter2) { image ->
-                        ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
-                            navHostController.navigate(Screens.Details.route)
+                        items(filter2) { image ->
+                            ImageItem(image!!) {
+                                viewModel.setImageDetail(image)
+                                navHostController.navigate(Screens.Details.route)
+                            }
                         }
                     }
-                }
-            } else {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        color = Purple,
-                        strokeWidth = 5.dp,
-                    )
-                }
-            }
-
-            Text(
-                text = stringResource(R.string.dogs),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    fontFamily = outfit
-                ),
-                modifier = Modifier.padding(start = 10.dp)
-            )
-
-            if (filter1.itemSnapshotList.isNotEmpty()) {
-                LazyRow() {
-                    items(filter1) { image ->
-                        ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
-                            navHostController.navigate(Screens.Details.route)
-                        }
+                } else {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            color = Purple,
+                            strokeWidth = 5.dp,
+                        )
                     }
                 }
-            } else {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        color = Purple,
-                        strokeWidth = 5.dp,
-                    )
-                }
-            }
 
-            Text(
-                text = stringResource(R.string.trending),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    fontFamily = outfit
-                ),
-                modifier = Modifier.padding(start = 10.dp)
-            )
+                Text(
+                    text = stringResource(R.string.dogs),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        fontFamily = outfit
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
 
-            if (popularImages.itemSnapshotList.isNotEmpty()) {
-                LazyRow() {
-                    items(popularImages) { image ->
-                        ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
-                            navHostController.navigate(Screens.Details.route)
+                if (filter1.itemSnapshotList.isNotEmpty()) {
+                    LazyRow() {
+                        items(filter1) { image ->
+                            ImageItem(image!!) {
+                                viewModel.setImageDetail(image)
+                                navHostController.navigate(Screens.Details.route)
+                            }
                         }
                     }
+                } else {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            color = Purple,
+                            strokeWidth = 5.dp,
+                        )
+                    }
                 }
-            } else {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        color = Purple,
-                        strokeWidth = 5.dp,
-                    )
+
+                Text(
+                    text = stringResource(R.string.trending),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        fontFamily = outfit
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+
+                if (popularImages.itemSnapshotList.isNotEmpty()) {
+                    LazyRow() {
+                        items(popularImages) { image ->
+                            ImageItem(image!!) {
+                                viewModel.setImageDetail(image)
+                                navHostController.navigate(Screens.Details.route)
+                            }
+                        }
+                    }
+                } else {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            color = Purple,
+                            strokeWidth = 5.dp,
+                        )
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(65.dp))
+
             }
+        else NoInternetView()
 
-            Spacer(modifier = Modifier.height(65.dp))
-
-        }
     }
 }
 

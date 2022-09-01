@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
+import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.navigation.TopBar
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 fun FavoriteScreen(
     viewModel: ImageViewModel,
     navHostController: NavHostController,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    isConnected: Boolean
 ) =
     with(viewModel) {
 
@@ -92,27 +94,32 @@ fun FavoriteScreen(
                 )
             }) {
 
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+            if (isConnected)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
 
-                favoriteImagesState.images?.let {
+                    favoriteImagesState.images?.let {
 
-                    StaggeredGridView(images = it, onImageClick = { photo ->
-                        setImageDetail(photo)
-                        navHostController.navigate(Screens.Details.route)
-                    }, onHoldClick = { photo ->
-                        selectedImage = photo
-                        openDialog = true
+                        StaggeredGridView(images = it, onImageClick = { photo ->
+                            setImageDetail(photo)
+                            navHostController.navigate(Screens.Details.route)
+                        }, onHoldClick = { photo ->
+                            selectedImage = photo
+                            openDialog = true
 
-                    }
+                        }
+                        )
+
+
+                    } ?: Text(
+                        text = "nothing to see here",
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
 
-
-                } ?: Text(
-                    text = "nothing to see here",
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-
-            }
+                }
+            else NoInternetView()
         }
 
     }

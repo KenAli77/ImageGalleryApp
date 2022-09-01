@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.domain.model.ImageState
+import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.TopBar
 import ken.projects.imagegalleryapp.ui.theme.outfit
@@ -31,7 +32,8 @@ import ken.projects.imagegalleryapp.ui.theme.outfit
 fun DetailScreen(
     imageState: ImageState,
     navHostController: NavHostController,
-    viewModel: ImageViewModel
+    viewModel: ImageViewModel,
+    isConnected: Boolean
 ) = with(viewModel) {
 
 
@@ -51,6 +53,7 @@ fun DetailScreen(
                 )
             }
         ) {
+            if(isConnected)
 
             Column(
                 modifier = Modifier
@@ -109,6 +112,8 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.height(65.dp))
 
             }
+
+            else NoInternetView()
 
         }
 

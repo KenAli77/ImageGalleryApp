@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
+import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.theme.Cyan
@@ -33,7 +34,11 @@ import ken.projects.imagegalleryapp.ui.theme.Purple
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchScreen(viewModel: ImageViewModel, navHostController: NavHostController) =
+fun SearchScreen(
+    viewModel: ImageViewModel,
+    navHostController: NavHostController,
+    isConnected: Boolean
+) =
     with(viewModel) {
 
         var query by remember { mutableStateOf("") }
@@ -41,6 +46,7 @@ fun SearchScreen(viewModel: ImageViewModel, navHostController: NavHostController
 
         Scaffold(modifier = Modifier.fillMaxSize()) {
 
+            if (isConnected)
             Column(
                 modifier = Modifier
                     .fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
@@ -85,6 +91,7 @@ fun SearchScreen(viewModel: ImageViewModel, navHostController: NavHostController
 
 
             }
+            else NoInternetView()
         }
 
     }
