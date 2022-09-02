@@ -37,12 +37,12 @@ fun HomeScreen(
     filter2: LazyPagingItems<PhotoItem>,
     viewModel: ImageViewModel,
     navHostController: NavHostController,
-) {
+) = with(viewModel) {
 
     val scrollState = rememberScrollState()
 
     Scaffold(
-        topBar = { TopBar(title = stringResource(R.string.appbar_text), onBackPressed = { }) },
+        topBar = { TopBar(title = stringResource(R.string.appbar_text)) },
         modifier = Modifier
             .fillMaxSize(),
     ) {
@@ -73,7 +73,7 @@ fun HomeScreen(
 
                     items(filter2) { image ->
                         ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
+                            setImageDetail(image)
                             navHostController.navigate(Screens.Details.route)
                         }
                     }
@@ -107,7 +107,7 @@ fun HomeScreen(
                 LazyRow {
                     items(filter1) { image ->
                         ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
+                            setImageDetail(image)
                             navHostController.navigate(Screens.Details.route)
                         }
                     }
@@ -141,7 +141,7 @@ fun HomeScreen(
                 LazyRow {
                     items(popularImages) { image ->
                         ImageItem(image!!) {
-                            viewModel.setImageDetail(image)
+                            setImageDetail(image)
                             navHostController.navigate(Screens.Details.route)
                         }
                     }

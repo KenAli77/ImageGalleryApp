@@ -54,9 +54,8 @@ fun SearchScreen(
                 SearchWidget(
                     text = query,
                     onTextChanged = { query = it },
-                    onCloseClicked = { /*TODO*/ },
                     onSearchClicked = {
-                        viewModel.searchImages(query)
+                        searchImages(query)
                         keyboardController?.hide()
                     }
                 )
@@ -99,7 +98,6 @@ fun SearchScreen(
 fun SearchWidget(
     text: String,
     onTextChanged: (String) -> Unit,
-    onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
 
@@ -139,11 +137,9 @@ fun SearchWidget(
             },
             trailingIcon = {
                 IconButton(onClick = {
-                    if (text.isNotEmpty()) {
+                    if (text.isNotEmpty())
                         onTextChanged("")
-                    } else {
-                        onCloseClicked()
-                    }
+
                 }) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
