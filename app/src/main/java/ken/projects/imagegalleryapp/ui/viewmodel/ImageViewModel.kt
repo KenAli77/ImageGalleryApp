@@ -12,9 +12,9 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ken.projects.imagegalleryapp.data.paging.PopularImagesDataSource
 import ken.projects.imagegalleryapp.data.paging.SearchImageDataSource
-import ken.projects.imagegalleryapp.domain.repository.Repository
-import ken.projects.imagegalleryapp.domain.model.PhotoItem
 import ken.projects.imagegalleryapp.domain.model.ImageState
+import ken.projects.imagegalleryapp.domain.model.PhotoItem
+import ken.projects.imagegalleryapp.domain.repository.Repository
 import ken.projects.imagegalleryapp.util.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,6 +55,7 @@ class ImageViewModel @Inject constructor(
     }.flow.cachedIn(viewModelScope)
 
     fun setImageDetail(image: PhotoItem) {
+
         imageDetail = imageDetail.copy(image = image)
         getPhotoMetadata(image.id)
     }
@@ -106,7 +107,9 @@ class ImageViewModel @Inject constructor(
         )
 
         when (val result = repo.getPhotoMetaData(photoId)) {
+
             is Resource.Error -> {
+
                 metadataState = metadataState.copy(
                     error = result.message.toString(),
                 )
@@ -119,15 +122,15 @@ class ImageViewModel @Inject constructor(
                 )
             }
 
-
         }
 
-
     }
+
 
     init {
         getFavorites()
     }
+
 
     private fun getFavorites() = viewModelScope.launch {
 
@@ -136,7 +139,6 @@ class ImageViewModel @Inject constructor(
             favoriteImagesState = favoriteImagesState.copy(images = it)
 
         }
-
 
     }
 
@@ -147,7 +149,9 @@ class ImageViewModel @Inject constructor(
     }
 
     fun removeImageFromFavorites(image: PhotoItem) = viewModelScope.launch {
+
         repo.removeImageFromFavorites(image)
+
     }
 
 

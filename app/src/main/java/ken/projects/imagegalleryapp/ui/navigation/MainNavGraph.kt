@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
 import ken.projects.imagegalleryapp.ui.screens.DetailScreen
@@ -41,9 +42,6 @@ import ken.projects.imagegalleryapp.util.connectivityState
 @Composable
 fun SetUpNavGraph(
     navHostController: NavHostController,
-    popularImages: LazyPagingItems<PhotoItem>,
-    filter1: LazyPagingItems<PhotoItem>,
-    filter2: LazyPagingItems<PhotoItem>,
     viewModel: ImageViewModel
 ) {
 
@@ -53,7 +51,16 @@ fun SetUpNavGraph(
 
     val isConnected = connection === ConnectionState.Available
 
+    val popularImages = viewModel.popularImagesPager.collectAsLazyPagingItems()
+    val filter1 = viewModel.searchImagePager1.collectAsLazyPagingItems()
+    val filter2 = viewModel.searchImagePager2.collectAsLazyPagingItems()
+
     LaunchedEffect(key1 = isConnected) {
+
+        filter1.refresh()
+        filter2.refresh()
+        popularImages.refresh()
+
         if (!isConnected)
             scaffoldState.snackbarHostState.showSnackbar(
                 "you're offline",

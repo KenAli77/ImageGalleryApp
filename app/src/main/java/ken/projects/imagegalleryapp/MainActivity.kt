@@ -29,11 +29,7 @@ class MainActivity : ComponentActivity() {
             ImageGalleyAppTheme {
                 navHostController = rememberNavController()
 
-                val popularPhotos = viewModel.popularImagesPager.collectAsLazyPagingItems()
-                val dogPhotos = viewModel.searchImagePager1.collectAsLazyPagingItems()
-                val kittenPhotos = viewModel.searchImagePager2.collectAsLazyPagingItems()
-
-                SetUpNavGraph(navHostController,popularPhotos,dogPhotos,kittenPhotos,viewModel)
+                SetUpNavGraph(navHostController,viewModel)
 
 
             }
