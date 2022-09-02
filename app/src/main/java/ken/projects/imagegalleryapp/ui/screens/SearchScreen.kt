@@ -1,10 +1,13 @@
 package ken.projects.imagegalleryapp.ui.screens
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
@@ -28,10 +31,10 @@ import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
-import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.theme.Cyan
 import ken.projects.imagegalleryapp.ui.theme.Purple
+import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -84,6 +87,7 @@ fun SearchScreen(
                         navHostController.navigate(Screens.Details.route)
 
                     })
+
 
                 }
 
@@ -295,3 +299,4 @@ private fun shortestColumn(columnHeights: IntArray): Int {
     }
     return columnIndex
 }
+
