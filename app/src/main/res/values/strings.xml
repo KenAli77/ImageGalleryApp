@@ -13,4 +13,9 @@
     <string name="appbar_text_favorites">Favorites</string>
     <string name="empty_favorites_text">nothing to see here</string>
     <string name="data">Data</string>
+    <string name="detail_screen_title">Image Details</string>
+    <string name="share_image">share image</string>
+    <string name="no_metadata">no data available</string>
+    <string name="add_favorite">add to favorites</string>
+    <string name="back_icon">back icon</string>
 </resources>

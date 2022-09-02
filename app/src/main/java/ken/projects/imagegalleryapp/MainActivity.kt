@@ -18,7 +18,7 @@ import ken.projects.imagegalleryapp.ui.theme.ImageGalleyAppTheme
 class MainActivity : ComponentActivity() {
 
     private val viewModel: ImageViewModel by viewModels()
-    lateinit var navHostController: NavHostController
+    private lateinit var navHostController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -29,27 +29,14 @@ class MainActivity : ComponentActivity() {
             ImageGalleyAppTheme {
                 navHostController = rememberNavController()
 
-
-
                 val popularPhotos = viewModel.popularImagesPager.collectAsLazyPagingItems()
                 val dogPhotos = viewModel.searchImagePager1.collectAsLazyPagingItems()
                 val kittenPhotos = viewModel.searchImagePager2.collectAsLazyPagingItems()
-
 
                 SetUpNavGraph(navHostController,popularPhotos,dogPhotos,kittenPhotos,viewModel)
 
 
             }
         }
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ImageGalleyAppTheme {
-
     }
 }

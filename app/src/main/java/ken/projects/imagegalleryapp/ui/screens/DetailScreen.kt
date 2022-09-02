@@ -1,8 +1,8 @@
 package ken.projects.imagegalleryapp.ui.screens
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,11 +10,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.rounded.Share
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,12 +29,10 @@ import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.Exif
-import ken.projects.imagegalleryapp.domain.model.ImageState
-import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
-import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.TopBar
 import ken.projects.imagegalleryapp.ui.theme.Purple
 import ken.projects.imagegalleryapp.ui.theme.outfit
+import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 
 @Composable
 fun DetailScreen(
@@ -44,17 +41,32 @@ fun DetailScreen(
 ) = with(viewModel) {
 
 
-    val uriHandler = LocalUriHandler.current
-
-
     imageDetail.image?.let { photoItem ->
+
+        val uriHandler = LocalUriHandler.current
+
+        val context = LocalContext.current
+        val shareIntent = Intent(Intent.ACTION_SEND)
+            .putExtra(Intent.EXTRA_TEXT, photoItem.url)
+            .putExtra(Intent.EXTRA_SUBJECT, photoItem.title)
+            .setType("text/plain")
 
         Scaffold(
             topBar = {
                 TopBar(
-                    title = "Image Details",
+                    title = stringResource(R.string.detail_screen_title),
                     onBackPressed = { navHostController.navigateUp() },
-                    backNavEnabled = true
+                    actions = {
+                        IconButton(onClick = {
+                            context.startActivity(Intent.createChooser(shareIntent, "Share Using"))
+                        }) {
+                            Icon(
+                                imageVector = Icons.Rounded.Share,
+                                contentDescription = stringResource(R.string.share_image),
+                                tint = Color.White
+                            )
+                        }
+                    }
                 )
             }
         ) {
@@ -90,7 +102,6 @@ fun DetailScreen(
                         }
                 )
 
-                val context = LocalContext.current
                 IconButton(onClick = {
                     if (favoriteImagesState.images!!.contains(photoItem)) {
                         removeImageFromFavorites(photoItem)
@@ -102,13 +113,13 @@ fun DetailScreen(
                     if (favoriteImagesState.images!!.contains(photoItem))
                         Icon(
                             imageVector = Icons.Rounded.Favorite,
-                            contentDescription = "add to favorites",
+                            contentDescription = stringResource(R.string.add_favorite),
                             modifier = Modifier.size(50.dp),
                             tint = Color.Red
                         ) else {
                         Icon(
                             imageVector = Icons.Rounded.FavoriteBorder,
-                            contentDescription = "add to favorites",
+                            contentDescription = stringResource(R.string.add_favorite),
                             modifier = Modifier.size(50.dp),
                             tint = Color.Red
                         )
@@ -160,19 +171,23 @@ fun DetailScreen(
                             }
                         } else {
                             Column(
-                                modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth(),
+                                modifier = Modifier
+                                    .padding(vertical = 20.dp)
+                                    .fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text(text = "no data available")
+                                Text(text = stringResource(R.string.no_metadata))
                             }
                         }
                     } ?: Column(
-                        modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(vertical = 20.dp)
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "no data available")
+                        Text(text = stringResource(R.string.no_metadata))
                     }
 
 

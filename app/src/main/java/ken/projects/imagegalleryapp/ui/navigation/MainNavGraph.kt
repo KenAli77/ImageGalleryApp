@@ -1,6 +1,8 @@
 package ken.projects.imagegalleryapp.ui.navigation
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -8,10 +10,10 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,14 +26,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
+import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
-import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.screens.DetailScreen
 import ken.projects.imagegalleryapp.ui.screens.FavoriteScreen
 import ken.projects.imagegalleryapp.ui.screens.HomeScreen
 import ken.projects.imagegalleryapp.ui.screens.SearchScreen
 import ken.projects.imagegalleryapp.ui.theme.Cyan
 import ken.projects.imagegalleryapp.ui.theme.outfit
+import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.util.ConnectionState
 import ken.projects.imagegalleryapp.util.connectivityState
 
@@ -60,7 +63,7 @@ fun SetUpNavGraph(
 
     }
 
-    Scaffold(bottomBar = { BottomNavBar(navHostController) }, scaffoldState = scaffoldState) { _ ->
+    Scaffold(bottomBar = { BottomNavBar(navHostController) }, scaffoldState = scaffoldState) {
 
         NavHost(
             navController = navHostController,
@@ -165,35 +168,31 @@ fun RowScope.AddItem(
 
 
 @Composable
-fun TopBar(title: String, onBackPressed: () -> Unit, backNavEnabled: Boolean = false) {
+fun TopBar(
+    title: String,
+    onBackPressed: (() -> Unit)? = null,
+    actions: @Composable (() -> Unit)? = null
+) {
 
     TopAppBar(
         title = {
             Text(text = title, style = TextStyle(fontFamily = outfit, fontSize = 25.sp))
         },
-        navigationIcon = if (backNavEnabled) {
+        navigationIcon = if (onBackPressed != null) {
             {
                 IconButton(onClick = { onBackPressed() }) {
-                    Icon(Icons.Rounded.ArrowBack, "backIcon")
+                    Icon(Icons.Rounded.ArrowBack, stringResource(R.string.back_icon))
                 }
             }
         } else null,
         backgroundColor = Cyan,
         contentColor = Color.White,
-        elevation = 10.dp
-    )
-}
+        elevation = 10.dp,
+        actions = {
+            if (actions != null) {
+                actions()
+            }
+        },
 
-@Composable
-fun NoInternetView() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Text(text = "you are offline")
-        }
-    }
+        )
 }

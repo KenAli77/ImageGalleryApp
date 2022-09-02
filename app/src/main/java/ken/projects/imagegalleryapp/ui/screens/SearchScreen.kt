@@ -28,7 +28,6 @@ import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
-import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.theme.Cyan
@@ -252,10 +251,10 @@ fun CustomStaggeredVerticalGrid(
         val columnWidth = (constraints.maxWidth / numColumns)
         val itemConstraints = constraints.copy(maxWidth = columnWidth)
         val columnHeights = IntArray(numColumns) { 0 }
-        val placeables = measurable.map { measurable ->
+        val placeables = measurable.map { measurable1 ->
 
             val column = shortestColumn(columnHeights)
-            val placeable = measurable.measure(itemConstraints)
+            val placeable = measurable1.measure(itemConstraints)
             columnHeights[column] += placeable.height
             placeable
 

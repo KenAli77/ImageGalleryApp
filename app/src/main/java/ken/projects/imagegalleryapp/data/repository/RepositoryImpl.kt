@@ -33,10 +33,10 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPhotoMetaData(photId: String): Resource<MetadataResponse> {
+    override suspend fun getPhotoMetaData(photoId: String): Resource<MetadataResponse> {
         return try {
 
-            val data = api.getPhotoMetadata(photId)
+            val data = api.getPhotoMetadata(photoId)
             Resource.Success(data)
 
         } catch (e: Exception) {

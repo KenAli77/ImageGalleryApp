@@ -27,9 +27,6 @@ class ImageViewModel @Inject constructor(
     var queryImageState by mutableStateOf(ImageState())
         private set
 
-    var popularPhotosState by mutableStateOf(ImageState())
-        private set
-
     var favoriteImagesState by mutableStateOf(ImageState())
 
     var imageDetail by mutableStateOf(ImageState())
@@ -102,7 +99,7 @@ class ImageViewModel @Inject constructor(
         }
     }
 
-    fun getPhotoMetadata(photoId: String) = viewModelScope.launch {
+    private fun getPhotoMetadata(photoId: String) = viewModelScope.launch {
 
         metadataState = metadataState.copy(
             loading = true,
@@ -132,7 +129,7 @@ class ImageViewModel @Inject constructor(
         getFavorites()
     }
 
-    fun getFavorites() = viewModelScope.launch {
+    private fun getFavorites() = viewModelScope.launch {
 
         repo.getFavoriteImages().collect {
 
@@ -151,42 +148,6 @@ class ImageViewModel @Inject constructor(
 
     fun removeImageFromFavorites(image: PhotoItem) = viewModelScope.launch {
         repo.removeImageFromFavorites(image)
-    }
-
-    fun getPopularPhotos() = viewModelScope.launch {
-
-        when (val searchResponse = repo.getPopularPhotos()) {
-            is Resource.Error -> {
-
-                Log.e("error", searchResponse.message.toString())
-                popularPhotosState = popularPhotosState.copy(
-                    error = searchResponse.message
-                )
-            }
-            is Resource.Success -> {
-                val images = ArrayList<PhotoItem>()
-                searchResponse.data?.let {
-                    Log.e("resp", it.photos.page.toString())
-                    it.photos.photo.forEach { image ->
-                        Log.e("image", image.id)
-                        val imageObject = PhotoItem(
-                            id = image.id,
-                            url = "https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg",
-                            title = image.title
-                        )
-                        images.add(imageObject)
-                    }
-                }
-                popularPhotosState = popularPhotosState.copy(
-                    images = images,
-                    loading = false,
-                )
-
-
-            }
-
-
-        }
     }
 
 

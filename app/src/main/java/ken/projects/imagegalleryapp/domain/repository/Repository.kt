@@ -11,7 +11,7 @@ interface Repository {
 
     suspend fun searchPhotos(query:String,page:Int?=null,perPage:Int?=null): Resource<SearchResponse>
     suspend fun getPopularPhotos(page:Int?=null, perPage:Int?=null): Resource<PopularPhotosResponse>
-    suspend fun getPhotoMetaData(photId:String):Resource<MetadataResponse>
+    suspend fun getPhotoMetaData(photoId:String):Resource<MetadataResponse>
 
     fun getFavoriteImages(): Flow<List<PhotoItem>>
     suspend fun addImageToFavorites(image:PhotoItem)
