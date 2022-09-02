@@ -21,10 +21,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
+import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
 import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
@@ -37,7 +39,6 @@ import ken.projects.imagegalleryapp.ui.theme.Purple
 fun SearchScreen(
     viewModel: ImageViewModel,
     navHostController: NavHostController,
-    isConnected: Boolean
 ) =
     with(viewModel) {
 
@@ -46,7 +47,6 @@ fun SearchScreen(
 
         Scaffold(modifier = Modifier.fillMaxSize()) {
 
-            if (isConnected)
             Column(
                 modifier = Modifier
                     .fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
@@ -91,7 +91,6 @@ fun SearchScreen(
 
 
             }
-            else NoInternetView()
         }
 
     }
@@ -124,14 +123,14 @@ fun SearchWidget(
                 .focusRequester(focusRequester),
             placeholder = {
                 Text(
-                    text = "search photos...", modifier = Modifier.alpha(
+                    text = stringResource(R.string.search_text), modifier = Modifier.alpha(
                         0.6f,
                     )
                 )
             },
             singleLine = true,
             leadingIcon = {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Rounded.Search,
                         contentDescription = "search icon",
@@ -161,7 +160,7 @@ fun SearchWidget(
             }),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
-                textColor = Color.Black,
+                textColor = Color.White,
                 cursorColor = Color.White
             )
 

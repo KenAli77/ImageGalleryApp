@@ -1,9 +1,12 @@
 package ken.projects.imagegalleryapp.data.paging
 
+import androidx.compose.runtime.getValue
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
 import ken.projects.imagegalleryapp.domain.repository.Repository
+import ken.projects.imagegalleryapp.util.ConnectionState
+import ken.projects.imagegalleryapp.util.connectivityState
 
 
 class PopularImagesDataSource (private val repo: Repository) :

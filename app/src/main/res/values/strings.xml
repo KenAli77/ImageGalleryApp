@@ -4,4 +4,13 @@
     <string name="dogs">Dogs</string>
     <string name="trending">Trending today</string>
     <string name="favorites">Your favorites</string>
+    <string name="search_text">search photos...</string>
+    <string name="appbar_text">Gallery App</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="deletion_message_favorites">are you sure you want to remove this image from your favorites?</string>
+    <string name="confirm">confirm</string>
+    <string name="dismiss">dismiss</string>
+    <string name="appbar_text_favorites">Favorites</string>
+    <string name="empty_favorites_text">nothing to see here</string>
+    <string name="data">Data</string>
 </resources>

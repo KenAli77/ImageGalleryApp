@@ -8,9 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import ken.projects.imagegalleryapp.R
 import ken.projects.imagegalleryapp.domain.model.PhotoItem
-import ken.projects.imagegalleryapp.ui.navigation.NoInternetView
 import ken.projects.imagegalleryapp.ui.viewmodel.ImageViewModel
 import ken.projects.imagegalleryapp.ui.navigation.Screens
 import ken.projects.imagegalleryapp.ui.navigation.TopBar
@@ -22,7 +23,6 @@ fun FavoriteScreen(
     viewModel: ImageViewModel,
     navHostController: NavHostController,
     scaffoldState: ScaffoldState,
-    isConnected: Boolean
 ) =
     with(viewModel) {
 
@@ -39,11 +39,11 @@ fun FavoriteScreen(
                     openDialog = false
                 },
                 title = {
-                    Text(text = "Remove photo")
+                    Text(text = stringResource(R.string.remove_photo))
                 },
                 text = {
                     Text(
-                        "are you sure you want to remove this image from your favorites?"
+                        stringResource(R.string.deletion_message_favorites)
                     )
                 },
                 confirmButton = {
@@ -69,7 +69,7 @@ fun FavoriteScreen(
 
                         }
                     ) {
-                        Text("confirm", color = Color.Red)
+                        Text(stringResource(R.string.confirm), color = Color.Red)
                     }
                 },
                 dismissButton = {
@@ -78,7 +78,7 @@ fun FavoriteScreen(
                             openDialog = false
                         }
                     ) {
-                        Text("dismiss", color = Cyan)
+                        Text(stringResource(R.string.dismiss), color = Cyan)
                     }
                 },
 
@@ -89,37 +89,51 @@ fun FavoriteScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopBar(
-                    title = "Favorites",
+                    title = stringResource(R.string.appbar_text_favorites),
                     onBackPressed = {}
                 )
             }) {
 
-            if (isConnected)
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
 
-                    favoriteImagesState.images?.let {
+                favoriteImagesState.images?.let { photos ->
 
-                        StaggeredGridView(images = it, onImageClick = { photo ->
+                    if (photos.isNotEmpty())
+                        StaggeredGridView(images = photos, onImageClick = { photo ->
                             setImageDetail(photo)
                             navHostController.navigate(Screens.Details.route)
                         }, onHoldClick = { photo ->
                             selectedImage = photo
                             openDialog = true
-
                         }
                         )
+                    else
+                        Column(
+                            Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.empty_favorites_text),
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
 
-
-                    } ?: Text(
-                        text = "nothing to see here",
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                } ?: Column(
+                    Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.empty_favorites_text),
                     )
-
                 }
-            else NoInternetView()
+
+
+            }
         }
 
     }

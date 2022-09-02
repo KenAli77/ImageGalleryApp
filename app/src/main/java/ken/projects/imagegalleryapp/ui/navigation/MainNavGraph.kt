@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +50,16 @@ fun SetUpNavGraph(
 
     val isConnected = connection === ConnectionState.Available
 
+    LaunchedEffect(key1 = isConnected) {
+        if (!isConnected)
+            scaffoldState.snackbarHostState.showSnackbar(
+                "you're offline",
+                "DISMISS",
+                SnackbarDuration.Long
+            )
+
+    }
+
     Scaffold(bottomBar = { BottomNavBar(navHostController) }, scaffoldState = scaffoldState) { _ ->
 
         NavHost(
@@ -63,22 +74,21 @@ fun SetUpNavGraph(
                     filter2 = filter2,
                     viewModel = viewModel,
                     navHostController = navHostController,
-                    isConnected = isConnected
                 )
             }
             composable(route = Screens.Favorites.route) {
                 FavoriteScreen(
-                    viewModel, navHostController, scaffoldState, isConnected = isConnected
+                    viewModel, navHostController, scaffoldState
                 )
             }
             composable(route = Screens.Search.route) {
                 SearchScreen(
-                    viewModel, navHostController, isConnected = isConnected
+                    viewModel, navHostController
                 )
             }
             composable(route = Screens.Details.route) {
                 DetailScreen(
-                    navHostController, viewModel, isConnected = isConnected
+                    navHostController, viewModel
                 )
             }
 

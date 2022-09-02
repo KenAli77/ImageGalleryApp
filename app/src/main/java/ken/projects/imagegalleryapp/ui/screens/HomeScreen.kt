@@ -38,18 +38,16 @@ fun HomeScreen(
     filter2: LazyPagingItems<PhotoItem>,
     viewModel: ImageViewModel,
     navHostController: NavHostController,
-    isConnected: Boolean
 ) {
 
     val scrollState = rememberScrollState()
 
     Scaffold(
-        topBar = { TopBar(title = "Gallery App", onBackPressed = { }) },
+        topBar = { TopBar(title = stringResource(R.string.appbar_text), onBackPressed = { }) },
         modifier = Modifier
             .fillMaxSize(),
     ) {
 
-       if (isConnected)
 
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -67,7 +65,6 @@ fun HomeScreen(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         fontFamily = outfit,
-                        color = Purple
                     ),
                     modifier = Modifier.padding(start = 10.dp)
                 )
@@ -83,7 +80,6 @@ fun HomeScreen(
                         }
                     }
                 } else {
-                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -118,7 +114,6 @@ fun HomeScreen(
                         }
                     }
                 } else {
-                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -153,7 +148,6 @@ fun HomeScreen(
                         }
                     }
                 } else {
-                    if(isConnected)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -171,7 +165,6 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(65.dp))
 
             }
-        else NoInternetView()
 
     }
 }
