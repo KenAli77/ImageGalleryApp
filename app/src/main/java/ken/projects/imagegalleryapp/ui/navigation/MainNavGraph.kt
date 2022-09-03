@@ -61,13 +61,16 @@ fun SetUpNavGraph(
         filter2.refresh()
         popularImages.refresh()
 
-        if (!isConnected)
+        if (!isConnected) {
             scaffoldState.snackbarHostState.showSnackbar(
                 "you're offline",
                 "DISMISS",
                 SnackbarDuration.Long
             )
+        } else {
 
+            scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+        }
     }
 
     Scaffold(bottomBar = { BottomNavBar(navHostController) }, scaffoldState = scaffoldState) {
