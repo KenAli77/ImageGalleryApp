@@ -40,12 +40,12 @@ fun DetailScreen(
     viewModel: ImageViewModel,
 ) = with(viewModel) {
 
+    val uriHandler = LocalUriHandler.current
+
+    val context = LocalContext.current
 
     imageDetail.image?.let { photoItem ->
 
-        val uriHandler = LocalUriHandler.current
-
-        val context = LocalContext.current
         val shareIntent = Intent(Intent.ACTION_SEND)
             .putExtra(Intent.EXTRA_TEXT, photoItem.url)
             .putExtra(Intent.EXTRA_SUBJECT, photoItem.title)
@@ -58,7 +58,12 @@ fun DetailScreen(
                     onBackPressed = { navHostController.navigateUp() },
                     actions = {
                         IconButton(onClick = {
-                            context.startActivity(Intent.createChooser(shareIntent, "Share Using"))
+                            context.startActivity(
+                                Intent.createChooser(
+                                    shareIntent,
+                                    context.getString(R.string.share_using)
+                                )
+                            )
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Share,
@@ -107,7 +112,11 @@ fun DetailScreen(
                         removeImageFromFavorites(photoItem)
                     } else {
                         addImageToFavorites(photoItem)
-                        Toast.makeText(context, "added to favorites", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.added_favorite),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                     if (favoriteImagesState.images!!.contains(photoItem))
@@ -138,6 +147,7 @@ fun DetailScreen(
 
                 if (metadataState.loading) {
                     Column(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {

@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import ken.projects.imagegalleryapp.R
@@ -29,6 +30,10 @@ fun FavoriteScreen(
         var selectedImage by remember { mutableStateOf(PhotoItem(id = "", url = "", title = "")) }
 
         val scope = rememberCoroutineScope()
+
+        val context = LocalContext.current
+
+
 
         var openDialog by remember { mutableStateOf(false) }
 
@@ -53,8 +58,8 @@ fun FavoriteScreen(
                                 removeImageFromFavorites(selectedImage)
                             scope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
-                                    "image removed",
-                                    "UNDO",
+                                    context.getString(R.string.image_removed),
+                                    context.getString(R.string.undo),
                                     SnackbarDuration.Long
                                 ).also {
                                     if (it == SnackbarResult.ActionPerformed) {

@@ -18,4 +18,9 @@
     <string name="no_metadata">no data available</string>
     <string name="add_favorite">add to favorites</string>
     <string name="back_icon">back icon</string>
+    <string name="offline_text">you\'re offline</string>
+    <string name="image_removed">image removed</string>
+    <string name="undo">UNDO</string>
+    <string name="share_using">Share Using</string>
+    <string name="added_favorite">added to favorites</string>
 </resources>
